@@ -92,3 +92,37 @@ class VariableDeclaration(Node):
         self.variable_node = variable_node
         self.type_node = type_node
 
+
+class CompoundStatements(Node):
+    def __init__(self, children, line):
+        Node.__init__(self, line)
+        self.children = children
+
+
+class Patameter(Node):
+    def __init__(self, var_node, type_node, line):
+        Node.__init__(self, line)
+        self.var_node = var_node
+        self.type_node = type_node
+
+
+class FunctionDeclaration(Node):
+    def __init__(self, type_node, func_name, parameters, block, line):
+        Node.__init__(self, line);
+        self.type_node = type_node
+        self.func_name = func_name
+        self.parameters = parameters
+        self.block = block
+
+
+class FunctionBlock(Node):
+    def __init__(self, children, line):
+        Node.__init__(self, line)
+        self.children = children
+
+
+class Program(Node):
+    def __init__(self, statements, line):
+        Node.__init__(self, line)
+        self.children = statements
+
