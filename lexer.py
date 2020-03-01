@@ -149,7 +149,26 @@ class Lexer(object):
         from text being analyzed
         :return token: INTEGER, FLOAT, DOUBLE .. numerical types
         """
-         
+        num = ''
+
+        while (self.current_char.isdigit()) and (self.current_char is not None):
+            num += self.current_char
+            self.advance()
+
+        if self.current_char == '.':
+            # we have a decimal
+            num += self.current_char
+            self.advance()
+
+            while (self.current_char.isdigit()) and (self.current_char is not None):
+                num += self.current_char
+                self.advance()
+
+            return Token(REAL_CONST, float(num))
+        else:
+            return Token(INTEGER_CONST, int(num))
+
+
 
     def peek(self, x):
         """
@@ -201,13 +220,20 @@ class Lexer(object):
 
             if self.current_char.isalpha():
                 # need to create var
+                pass
 
             if self.current_char.isdigit():
                 # need to create number
+                self.number()
+                continue
 
             if self.current_char == '"':
                 # create string
+                self.string()
+                continue
 
             if self.current_char == '\'':
                 # need to create char
+                self.char()
+                continue
 
