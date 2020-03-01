@@ -168,8 +168,6 @@ class Lexer(object):
         else:
             return Token(INTEGER_CONST, int(num))
 
-
-
     def peek(self, x):
         """
         Function used to peek forward from the current position self.pos by a value
@@ -201,7 +199,7 @@ class Lexer(object):
     def get_next(self):
         """
         Function used to get the next char from the input text we want to analyze
-        :return None:
+        :return token: return next token
         """
 
         while self.current_char is not None:
@@ -215,25 +213,211 @@ class Lexer(object):
                 continue
 
             if self.current_char.isspace():
-                self.skip_white()
-                continue
+                return self.skip_white()
 
             if self.current_char.isalpha():
                 # need to create var
-                pass
+                return self.keyword()
 
             if self.current_char.isdigit():
                 # need to create number
-                self.number()
-                continue
+                return self.number()
 
             if self.current_char == '"':
                 # create string
-                self.string()
-                continue
+                return self.string()
 
             if self.current_char == '\'':
                 # need to create char
-                self.char()
-                continue
+                return self.char()
 
+            """
+                Need to check for Assigns
+            """
+            if (self.current_char == '+') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(ADD_ASSIGN, '+=')
+
+            if (self.current_char == '-') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(SUB_ASSIGN, '-=')
+
+            if (self.current_char == '/') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(DIV_ASSIGN, '/=')
+
+            if (self.current_char == '*') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(MUL_ASSIGN, '*=')
+
+            if (self.current_char == '%') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(MOD_ASSIGN, '%=')
+
+            if (self.current_char == '&') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(AND_ASSIGN, '&=')
+
+            if (self.current_char == '|') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(OR_ASSIGN, '|=')
+
+            if (self.current_char == '^') and (self.peek(1) == '='):
+                self.advance()
+                self.advance()
+                return Token(XOR_ASSIGN, '^=')
+
+            """
+                Logical Operators
+            """
+            if self.current_char == '&' and self.peek(1) == '&':
+                self.advance()
+                self.advance()
+                return Token(LOG_AND, '&&')
+
+            if self.current_char == '|' and self.peek(1) == '|':
+                self.advance()
+                self.advance()
+                return Token(LOG_OR, '||')
+
+            """
+                Increment Decrement
+            """
+            if self.current_char == '+' and self.peek(1) == '+':
+                self.advance()
+                self.advance()
+                return Token(INC, '++')
+
+            if self.current_char == '-' and self.peek(1) == '-':
+                self.advance()
+                self.advance()
+                return Token(DEC, '--')
+
+            """
+                Comparison operators
+            """
+            if self.current_char == '>' and self.peek(1) == '=':
+                self.advance()
+                self.advance()
+                return Token(GE, '>=')
+
+            if self.current_char == '<' and self.peek(1) == '=':
+                self.advance()
+                self.advance()
+                return Token(LE, '<=')
+
+            if self.current_char == '>':
+                self.advance()
+                return Token(GT, '>')
+
+            if self.current_char == '<':
+                self.advance()
+                return Token(LT, '<')
+
+            if self.current_char == '=' and self.peek(1) == '=':
+                self.advance()
+                self.advance()
+                return Token(EQ, '==')
+
+            if self.current_char == '!' and self.peek(1) == '=':
+                self.advance()
+                self.advance()
+                return Token(NE, '!=')
+
+            if self.current_char == '!':
+                self.advance()
+                return Token(LOG_NEG, '!')
+
+            """
+                Assign, and Bitwise operators
+            """
+            if self.current_char == '=':
+                self.advance()
+                return Token(ASSIGN, '=')
+
+            if self.current_char == '&':
+                self.advance()
+                return Token(AND, '&')
+
+            if self.current_char == '|':
+                self.advance()
+                return Token(OR, '|')
+
+            if self.current_char == '^':
+                self.advance()
+                return Token(XOR, '|')
+
+            """
+                Arithmetic Operators
+            """
+            if self.current_char == '+':
+                self.advance()
+                return Token(ADD, '+')
+
+            if self.current_char == '-':
+                self.advance()
+                return Token(SUB, '-')
+
+            if self.current_char == '/':
+                self.advance()
+                return Token(DIV, '/')
+
+            if self.current_char == '*':
+                self.advance()
+                return Token(MUL, '*')
+
+            if self.current_char == '%':
+                self.advance()
+                return Token(MOD, '%')
+
+            """
+                Extra Chars
+            """
+            if self.current_char == '{':
+                self.advance()
+                return Token(LBRACKET, '{')
+
+            if self.current_char == '}':
+                self.advance()
+                return Token(RBRACKET, '}')
+
+            if self.current_char == '(':
+                self.advance()
+                return Token(LPAREN, '(')
+
+            if self.current_char == ')':
+                self.advance()
+                return Token(RPAREN, ')')
+
+            if self.current_char == ':':
+                self.advance()
+                return Token(COLON, ':')
+
+            if self.current_char == ';':
+                self.advance()
+                return Token(SEMICOLON, ';')
+
+            if self.current_char == '.':
+                self.advance()
+                return Token(DOT, '.')
+
+            if self.current_char == ',':
+                self.advance()
+                return Token(COMMA, ',')
+
+            if self.current_char == '?':
+                self.advance()
+                return Token(QUESTION_MARK, '?')
+
+            if self.current_char == '#':
+                self.advance()
+                return Token(HASH, '#')
+
+        return Token(EOF, None)
