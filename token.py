@@ -95,11 +95,11 @@ class Token(object):
         Function used to create the token string
         :return token: token containing the type and value of the token
         """
-        token = 'Token({type}. {value})'.format(type=self.type, value=self.value)
+        token = 'Token({type}. {value})'.format(type=self.type, value=repr(self.value))
 
         return token
 
-    def get_string(self):
+    def __repr__(self):
         """
         Function used to get the token string representation of the object
         :return: token containing the type and value of the token
