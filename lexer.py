@@ -55,6 +55,59 @@ class Lexer(object):
             self.advance()
             curr_char = self.current_char
 
+    def skip_single_comment(self):
+        """
+        Function used to ignore single comment line in text being analyzed
+        and advance position
+        :return None:
+        """
+        curr_char = self.current_char
+
+        while curr_char is not None:
+            if curr_char == NEWLINE:
+                # done ignoring comment
+                self.line += 1
+                self.advance()
+                return
+
+            self.advance()
+            curr_char = self.current_char
+
+    def skip_block_comment(self):
+        """
+        Function used to ignore comment block in text being analyzed
+        :return None:
+        """
+        curr_char = self.current_char
+
+        while curr_char is not None:
+            if curr_char == '*' and self.peek(1) == '/':
+                self.advance()
+                self.advance()
+                return
+            elif curr_char == NEWLINE:
+                self.line += 1
+
+            self.advance()
+
+        error_message = 'Invalid Format, exiting...'
+        self.error(error_message)
+
+    def peek(self, x):
+        """
+        Function used to peek forward from the current position self.pos by a value
+        of x. e.g., self.pos + x
+        :param x: check the self.pos + x character value
+        :return val: the char value at position self.pos + x
+        """
+        if (self.pos + x) > len(self.text) - 1:
+            # Index our of bounds
+            return None
+        else:
+            val = self.text[self.pos + x]
+            return val
+
+
     def advance(self):
         """
         Function used to advance the position we are pointing to in the
