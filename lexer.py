@@ -1,5 +1,7 @@
 from .token import *
 
+NEWLINE = '\n'
+
 RESERVED_KEYWORDS = {
     'char': Token(CHAR, 'char'),
     'int': Token(INT, 'int'),
@@ -38,3 +40,31 @@ class Lexer(object):
         print('Error: {message}'.format(message=message))
         exit(1)
 
+    def skip_white(self):
+        """
+        Function used to skip whitespaces
+        :return None:
+        """
+        curr_char = self.current_char
+
+        while (curr_char.isspace()) and (curr_char is not None):
+            # check if newline
+            if curr_char == NEWLINE:
+                self.line += 1
+
+            self.advance()
+            curr_char = self.current_char
+
+    def advance(self):
+        """
+        Function used to advance the position we are pointing to in the
+        text to evaluate
+        :return None:
+        """
+        self.pos += 1
+
+        if (self.pos > len(self.text) -1):
+            # We have reachec end of text
+            self.current_char = None
+        else:
+            self.current_char = self.text[self.pos]
