@@ -1,4 +1,5 @@
-from .token import *
+from token import Token
+from grammar import *
 
 NEWLINE = '\n'
 
@@ -107,7 +108,6 @@ class Lexer(object):
             val = self.text[self.pos + x]
             return val
 
-
     def advance(self):
         """
         Function used to advance the position we are pointing to in the
@@ -121,3 +121,36 @@ class Lexer(object):
             self.current_char = None
         else:
             self.current_char = self.text[self.pos]
+
+    def get_next(self):
+        """
+        Function used to get the next char from the input text we want to analyze
+        :return None:
+        """
+
+        while self.current_char is not None:
+
+            if (self.current_char == '/') and (self.peek(1) == '/'):
+                self.skip_single_comment()
+                continue
+
+            if (self.current_char == '/') and (self.peek(1) == '*'):
+                self.skip_block_comment()
+                continue
+
+            if self.current_char.isspace():
+                self.skip_white()
+                continue
+
+            if self.current_char.isalpha():
+                # need to create var
+
+            if self.current_char.isdigit():
+                # need to create number
+
+            if self.current_char == '"':
+                # create string
+
+            if self.current_char == '\'':
+                # need to create char
+
