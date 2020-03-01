@@ -94,6 +94,63 @@ class Lexer(object):
         error_message = 'Invalid Format, exiting...'
         self.error(error_message)
 
+    def keyword(self):
+        """
+        Function used to handle if we see key work or some var
+        :return token: Token created with value and type
+        """
+        val = ''
+
+        while (self.current_char.isalpha()) and (self.current_char is not None):
+            val += self.current_char
+            self.advance()
+
+        return RESERVED_KEYWORDS.get(val, Token(ID, val))
+
+    def char(self):
+        """
+        Function used to handle chars between single quotes e.g., 'c'
+        :return token: Return a char token
+        """
+        self.advance()
+        char = self.current_char
+        self.advance()
+
+        if self.current_char != '\'':
+            error_message = 'Invalid Char format!'
+            self.error(error_message)
+
+        self.advance()
+
+        return Token(CHAR_CONST, ord(char))
+
+    def string(self):
+        """
+        Function used to get string in double quotes in C language
+        :return token: String token with value
+        """
+        string = ''
+        self.advance()
+
+        while self.current_char is not '"':
+            if self.current_char is None:
+                error_message = 'Invalid format for string!'
+                self.error(error_message)
+
+            string += self.current_char
+            self.advance()
+
+        self.advance()
+        return Token(STRING, string)
+
+    def number(self):
+        """
+        Function used to return numerical values such as integers, and doubles
+        from text being analyzed
+        :return token: INTEGER, FLOAT, DOUBLE .. numerical types
+        """
+         
+
     def peek(self, x):
         """
         Function used to peek forward from the current position self.pos by a value
