@@ -35,7 +35,7 @@ class Interpreter(c_ast.NodeVisitor):
     def visit_Compound(self, node):
         node.show()
 
-    def visit_Assignment(node):
+    def visit_Assignment(self, node):
         node.show()
 
     def visit_If(self, node):
@@ -51,16 +51,15 @@ class Interpreter(c_ast.NodeVisitor):
         node.show()
 
     def read_file(self, filename):
-        ast = parse_file(sys.argv[1], use_cpp=True)
+        ast = parse_file(filename, use_cpp=True)
         return ast
 
     def interpret(self, ast):
         self.visit(ast)
+        return True
 
     def run(self, filename):
         try:
-            print('yay')
-            exit(0)
             ast = self.read_file(filename)
             status = self.interpret(ast)
         except Exception as e:
