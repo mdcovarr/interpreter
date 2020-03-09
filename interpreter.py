@@ -2,7 +2,7 @@ from pycparser import parse_file, c_parser, c_generator, c_ast
 
 class Interpreter(c_ast.NodeVisitor):
     def __init__(self):
-        pass
+        self.scopes = None
 
     def visit(self, node):
         method = 'visit_' + node.__class__.__name__
@@ -15,9 +15,12 @@ class Interpreter(c_ast.NodeVisitor):
         node.show()
 
     def visit_FileAST(self, node):
-        node.show()
+        for ext in node.ext:
+            if isinstance(ext, c_ast.FuncDef):
+                self.visit(ext)
 
     def visit_FuncDef(self, node):
+        print('Yay')
         node.show()
 
     def visit_Decl(self, node):
@@ -56,11 +59,12 @@ class Interpreter(c_ast.NodeVisitor):
 
     def interpret(self, ast):
         self.visit(ast)
-        return True
+        return 0
 
     def run(self, filename):
         try:
             ast = self.read_file(filename)
             status = self.interpret(ast)
+            return status
         except Exception as e:
             print('Error: {0}'.format(e))
