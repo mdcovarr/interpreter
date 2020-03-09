@@ -50,8 +50,18 @@ class Interpreter(c_ast.NodeVisitor):
     def visit_Return(self, node):
         node.show())
 
-    def interpret(self):
-        pass
+    def read_file(self, filename):
+        ast = parse_file(sys.argv[1], use_cpp=True)
+        return ast
 
-    def run(self):
-        pass
+    def interpret(self, ast):
+        self.visit(ast)
+
+    @staticmethod
+    def run(filename):
+        try:
+            reader = Interpreter()
+            ast = reader.read_file(filename)
+            status = reader.interpret(ast)
+        except Exception as e:
+            print('Error: {0}'.format(e))
