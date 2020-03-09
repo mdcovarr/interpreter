@@ -23,7 +23,7 @@ class Interpreter(c_ast.NodeVisitor):
     def visit_Decl(self, node):
         node.show()
 
-    def visit_DeclList(self node):
+    def visit_DeclList(self, node):
         node.show()
 
     def visit_FuncDecl(self, node):
@@ -48,7 +48,7 @@ class Interpreter(c_ast.NodeVisitor):
         node.show()
 
     def visit_Return(self, node):
-        node.show())
+        node.show()
 
     def read_file(self, filename):
         ast = parse_file(sys.argv[1], use_cpp=True)
@@ -57,11 +57,11 @@ class Interpreter(c_ast.NodeVisitor):
     def interpret(self, ast):
         self.visit(ast)
 
-    @staticmethod
-    def run(filename):
+    def run(self, filename):
         try:
-            reader = Interpreter()
-            ast = reader.read_file(filename)
-            status = reader.interpret(ast)
+            print('yay')
+            exit(0)
+            ast = self.read_file(filename)
+            status = self.interpret(ast)
         except Exception as e:
             print('Error: {0}'.format(e))
