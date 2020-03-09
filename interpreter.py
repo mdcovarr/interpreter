@@ -20,20 +20,24 @@ class Interpreter(c_ast.NodeVisitor):
                 self.visit(ext)
 
     def visit_FuncDef(self, node):
-        print('Yay')
-        node.show()
+        decl = node.decl
+        self.visit(decl)
 
     def visit_Decl(self, node):
-        node.show()
+        # node.name = the name of the function
+        func_decl = node.type
+        self.visit(func_decl)
 
     def visit_DeclList(self, node):
         node.show()
 
     def visit_FuncDecl(self, node):
-        node.show()
+        param_list = node.args
+        self.visit(param_list)
 
     def visit_ParamList(self, node):
-        node.show()
+        for i, param in enumerate(node.params):
+            print ('{0}: {1}'.format(i, param))
 
     def visit_Compound(self, node):
         node.show()
