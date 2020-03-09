@@ -3,7 +3,7 @@
 """
 
 
-class Token(object):
+class MyToken(object):
     def __init__(self, value, token_type):
         """
         Token class constructor
