@@ -14,7 +14,7 @@ class Interpreter(c_ast.NodeVisitor):
         node.show()
 
     def visit_Constant(self, node):
-        node.show()
+        return int(node.value)
 
     def visit_FileAST(self, node):
             for ext in node.ext:
@@ -23,7 +23,11 @@ class Interpreter(c_ast.NodeVisitor):
 
     def visit_FuncDef(self, node):
         decl = node.decl
-        self.visit(decl)
+        # need to add parameters of function to memory
+        if node.decl.type.args:
+            for i, arg in enumerate(node.decl.type.args.params):
+                self.memory[arg.name] = self.memory.stack.current_frame.current_scope.values.pop(i)
+        return self.visit(node.body)
 
     def visit_Decl(self, node):
         # node.name = the name of the function
@@ -42,7 +46,10 @@ class Interpreter(c_ast.NodeVisitor):
             print ('{0}: {1}'.format(i, param))
 
     def visit_Compound(self, node):
-        node.show()
+        for stmt in node.block_items:
+            if isinstance(stmt, c_ast.Return):
+                return self.visit(stmt)
+            self.visit(stmt)
 
     def visit_Assignment(self, node):
         node.show()
@@ -57,15 +64,25 @@ class Interpreter(c_ast.NodeVisitor):
         node.show()
 
     def visit_Return(self, node):
-        node.show()
+        return self.visit(node.expr)
 
     def read_file(self, filename):
         ast = parse_file(filename, use_cpp=True)
         return ast
 
+    def create_main_frame(self):
+        """
+        Function used to create the main frame
+        :return None:
+        """
+        self.memory.add_frame('main')
+
     def interpret(self, ast):
         self.get_functions(ast)
-        return 0
+        self.create_main_frame()
+        exit_status = self.visit(self.memory['main'])
+
+        return exit_status
 
     def load_function(self, node):
         name = node.decl.name
