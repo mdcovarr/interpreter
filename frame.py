@@ -26,12 +26,19 @@ class Frame(object):
         Function used to add a new scope
         :return None:
         """
+        self.current_scope = self.create_new_scope(self.current_scope.name, self.current_scope)
+        self.scopes.append(self.current_scope)
 
     def del_scope(self):
         """
         Function used to delete a scope
         :return:
         """
+        temp_scope = self.current_scope
+        self.current_scope = temp_scope.parent_scope
+        del temp_scope
+
+        self.scopes.pop(len(self.scopes) - 1)
 
     def __contains__(self, key):
         """
@@ -39,3 +46,4 @@ class Frame(object):
         :param key:
         :return:
         """
+        return key in self.scopes
