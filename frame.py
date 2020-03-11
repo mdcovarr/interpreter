@@ -4,7 +4,8 @@ from scope import Scope
 class Frame(object):
     def __init__(self, name, global_scope):
         self.name = name
-        self.current_scope = self.create_new_scope(name, global_scope)
+        scope_name = '{0}_00'.format(name)
+        self.current_scope = self.create_new_scope(scope_name, global_scope)
         self.scopes = []
         self.scopes.append(self.current_scope)
 
@@ -16,8 +17,7 @@ class Frame(object):
         :param global_scope:
         :return:
         """
-        scope_name = '{0}_{1}'.format(name, 1)
-        curr_scope = Scope(scope_name, global_scope)
+        curr_scope = Scope(name, global_scope)
 
         return curr_scope
 
@@ -26,7 +26,9 @@ class Frame(object):
         Function used to add a new scope
         :return None:
         """
-        self.current_scope = self.create_new_scope(self.current_scope.name, self.current_scope)
+        val = int(self.current_scope[-2:]) + 1
+        name = '{}_{:02d}'.format(self.current_scope.name[:-2], val)
+        self.current_scope = self.create_new_scope(name, self.current_scope)
         self.scopes.append(self.current_scope)
 
     def del_scope(self):
