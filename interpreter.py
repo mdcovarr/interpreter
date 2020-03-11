@@ -30,8 +30,19 @@ class Interpreter(c_ast.NodeVisitor):
                 self.memory[arg.name] = self.memory.stack.current_frame.current_scope.values.pop(i)
         return self.visit(node.body)
 
+    def visit_TypeDecl(self, node):
+        """
+        Function used for a type declaration
+        :param node:
+        :return:
+        """
+        pass
+
     def visit_Decl(self, node):
         # node.name = the name of the function
+        # need to catch the different type of declarations
+        if isinstance(node.type, c_ast.TypeDecl):
+            self.visit(node.type)
         func_decl = node.type
         self.visit(func_decl)
 
