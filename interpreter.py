@@ -1,8 +1,10 @@
 from pycparser import parse_file, c_parser, c_generator, c_ast
+from memory import Memory
+
 
 class Interpreter(c_ast.NodeVisitor):
     def __init__(self):
-        self.memory = {}
+        self.memory = Memory()
 
     def visit(self, node):
         method = 'visit_' + node.__class__.__name__
@@ -63,15 +65,11 @@ class Interpreter(c_ast.NodeVisitor):
 
     def interpret(self, ast):
         self.get_functions(ast)
-        for key, valye in self.memory.items():
-            print(key)
-        #self.visit(ast)
         return 0
 
     def load_function(self, node):
         name = node.decl.name
         self.memory[name] = node
-
 
     def get_functions(self, ast):
         for ext in ast.ext:
