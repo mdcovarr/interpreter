@@ -47,13 +47,14 @@ class Memory(object):
         :param new_frame_name: new frame name
         :return None:
         """
-        pass
+        self.stack.add_frame(new_frame_name, self.GLOBAL_FRAME.current_scope)
 
     def del_frame(self):
         """
         Function used to delete the a frame from the stack
         :return None:
         """
+        self.stack.del_frame()
 
     def add_scope(self):
         """
