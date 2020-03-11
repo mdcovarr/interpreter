@@ -1,3 +1,5 @@
+from frame import Frame
+
 
 class Stack(object):
     def __init__(self):
@@ -11,11 +13,18 @@ class Stack(object):
         :param global_scope:
         :return None:
         """
-        pass
+        curr_frame = Frame(name, global_scope)
+        self.current_frame = curr_frame
+        self.frames.append(self.current_frame)
 
     def del_frame(self):
         """
         Function used to delete a frame
         :return None:
         """
-        pass
+        self.frames.pop(len(self.frames) - 1)
+
+        if len(self.frames) > 0:
+            self.current_frame = self.frames[len(self.frames) - 1]
+        else:
+            self.current_frame = None
