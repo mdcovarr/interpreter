@@ -26,14 +26,20 @@ class Memory(object):
 
         in_scope[key] = value
 
-
-
     def __getitem__(self, key):
         """
         Overload dict [] function used to get a value using a key, from the current scope
         :return:
         """
-        pass
+        if self.stack.current_frame:
+            curr_scope = self.stack.current_frame.current_scope
+        else:
+            curr_scope = self.GLOBAL_FRAME.current_scope
+
+        while curr_scope and key not in curr_scope:
+            curr_scope = curr_scope.parent
+
+        return curr_scope[key]
 
     def add_frame(self, new_frame_name):
         """
