@@ -48,4 +48,4 @@ class Frame(object):
         :param key:
         :return:
         """
-        return key in self.scopes
+        return key in self.current_scope
