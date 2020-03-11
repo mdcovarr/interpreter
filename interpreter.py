@@ -58,7 +58,41 @@ class Interpreter(c_ast.NodeVisitor):
         node.show()
 
     def visit_BinaryOp(self, node):
-        node.show()
+        """
+        Function used to determine return from binary operator
+        :param node: binary operator node
+        :return: Evaluated binary operation
+        """
+        op = node.op
+
+        if op == '+':
+            return self.visit(node.left) + self.visit(node.right)
+        elif op == '-':
+            return self.visit(node.left) - self.visit(node.right)
+        elif op == '/':
+            return self.visit(node.left) / self.visit(node.right)
+        elif op == '*':
+            return self.visit(node.left) * self.visit(node.right)
+        elif op == '%':
+            return self.visit(node.left) % self.visit(node.right)
+        elif op == '*':
+            return self.visit(node.left) * self.visit(node.right)
+        elif op == '<':
+            return self.visit(node.left) < self.visit(node.right)
+        elif op == '>':
+            return self.visit(node.left) > self.visit(node.right)
+        elif op == '>=':
+            return self.visit(node.left) >= self.visit(node.right)
+        elif op == '<=':
+            return self.visit(node.left) <= self.visit(node.right)
+        elif op == '&&':
+            return self.visit(node.left) and self.visit(node.right)
+        elif op == '||':
+            return self.visit(node.left) or self.visit(node.right)
+        elif op == '==':
+            return self.visit(node.left) == self.visit(node.right)
+        elif op == '!=':
+            return self.visit(node.left) != self.visit(node.right)
 
     def visit_While(self, node):
         node.show()
