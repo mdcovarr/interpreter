@@ -16,7 +16,7 @@ def main():
 
     if args.file:
         interpreter = Interpreter()
-        interpreter.run(args.file)
+        exit(interpreter.run(args.file))
 
 if __name__ == '__main__':
     main()
