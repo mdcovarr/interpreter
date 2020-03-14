@@ -45,8 +45,9 @@ class Interpreter(c_ast.NodeVisitor):
         if isinstance(node.type, c_ast.TypeDecl):
             self.visit(node.type)
             self.visit_Assign(node)
-        func_decl = node.type
-        self.visit(func_decl)
+        elif isinstance(node.type, c_ast.FuncDecl):
+            func_decl = node.type
+            self.visit(func_decl)
 
     def visit_Assign(self, node):
         """
@@ -75,7 +76,20 @@ class Interpreter(c_ast.NodeVisitor):
             self.visit(stmt)
 
     def visit_Assignment(self, node):
-        node.show()
+        var = node.lvalue.name
+        op = node.op
+
+        if op == '=':
+            self.memory[var] = self.visit(node.rvalue)
+        elif op == '+=':
+            self.memory[var] += self.visit(node.rvalue)
+        elif op == '-=':
+            self.memory[var] -= self.visit(node.rvalue)
+        elif op == '/=':
+            self.memory[var] /= self.visit(node.rvalue)
+        elif op == '*=':
+            self.memory[var] *= self.visit(node.rvalue)
+
 
     def visit_If(self, node):
         node.show()
