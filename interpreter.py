@@ -156,6 +156,11 @@ class Interpreter(c_ast.NodeVisitor):
             self.visit(node.stmt)
 
     def visit_Return(self, node):
+        """
+        Function used to handle the return statement
+        :param node: return AST node
+        :return: the evaluated return expression
+        """
         return self.visit(node.expr)
 
     def read_file(self, filename):
