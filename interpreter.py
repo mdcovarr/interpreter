@@ -36,15 +36,26 @@ class Interpreter(c_ast.NodeVisitor):
         :param node:
         :return:
         """
-        pass
+        # need to store new type declaration.
+        self.memory.declare_variable(node.declname)
 
     def visit_Decl(self, node):
         # node.name = the name of the function
         # need to catch the different type of declarations
         if isinstance(node.type, c_ast.TypeDecl):
             self.visit(node.type)
+            self.visit_Assign(node)
         func_decl = node.type
         self.visit(func_decl)
+
+    def visit_Assign(self, node):
+        """
+        Function used to execute the assign statement
+        :param node:
+        :return:
+        """
+        key = node.name
+        self.memory[key] = self.visit(node.init)
 
     def visit_DeclList(self, node):
         node.show()
