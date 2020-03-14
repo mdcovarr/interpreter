@@ -11,8 +11,14 @@ class Interpreter(c_ast.NodeVisitor):
         return getattr(self, method, self.generic_visit)(node)
 
     def visit_ID(self, node):
-        # need to get value from scope
+        """
+        Function used to get a value from memory
+        :param node: ID node with name of variable
+        :return value: value stored in memory
+        """
         value = self.memory[node.name]
+
+        return value
 
     def visit_Constant(self, node):
         return int(node.value)
