@@ -67,3 +67,20 @@ class Memory(object):
         Funtion used to delete a scope from the current frame
         :return:
         """
+
+    def declare_variable(self, key, value=None):
+        """
+        Function used to put newly declared varaible in scope
+        :param key:
+        :param value:
+        :return:
+        """
+        if self.stack.current_frame:
+            in_scope = self.stack.current_frame.current_scope
+        else:
+            in_scope = self.GLOBAL_FRAME.current_scope
+
+        if value:
+            in_scope[key] = value
+        else:
+            in_scope[key] = 0
