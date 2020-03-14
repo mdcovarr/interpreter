@@ -147,7 +147,13 @@ class Interpreter(c_ast.NodeVisitor):
             return self.visit(node.left) != self.visit(node.right)
 
     def visit_While(self, node):
-        node.show()
+        """
+        Function used to handle While statement
+        :param node: node pertaining to while implementation in the AST
+        :return None:
+        """
+        while self.visit(node.cond):
+            self.visit(node.stmt)
 
     def visit_Return(self, node):
         return self.visit(node.expr)
