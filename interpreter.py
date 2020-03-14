@@ -51,7 +51,7 @@ class Interpreter(c_ast.NodeVisitor):
 
     def visit_Assign(self, node):
         """
-        Function used to execute the assign statement
+        Function used to execute the assign statement in a declaration
         :param node:
         :return:
         """
@@ -90,9 +90,18 @@ class Interpreter(c_ast.NodeVisitor):
         elif op == '*=':
             self.memory[var] *= self.visit(node.rvalue)
 
+        return self.memory[var]
 
     def visit_If(self, node):
-        node.show()
+        """
+        Function used to handle C language If statements
+        :param node:
+        :return:
+        """
+        if self.visit(node.cond):
+            self.visit(node.iftrue)
+        else:
+            self.visit(node.iffalse)
 
     def visit_BinaryOp(self, node):
         """
