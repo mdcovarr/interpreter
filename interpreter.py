@@ -65,7 +65,13 @@ class Interpreter(c_ast.NodeVisitor):
         self.memory[key] = self.visit(node.init)
 
     def visit_DeclList(self, node):
-        node.show()
+        """
+        Function used to handle list of declarations
+        :param node: declaration list node in AST
+        :return None:
+        """
+        for decl in node.decls:
+            self.visit(decl)
 
     def visit_FuncDecl(self, node):
         param_list = node.args
@@ -154,6 +160,17 @@ class Interpreter(c_ast.NodeVisitor):
         """
         while self.visit(node.cond):
             self.visit(node.stmt)
+
+    def visit_For(self, node):
+        """
+        Function used to handle the For statement
+        :param node:
+        :return:
+        """
+        self.visit(node.init)
+        while self.visit(node.cond):
+            self.visit(node.stmt)
+            self.visit(node.next)
 
     def visit_Return(self, node):
         """
