@@ -39,9 +39,33 @@ class Interpreter(c_ast.NodeVisitor):
         :param node: the root node of the AST
         :return None:
         """
-            for ext in node.ext:
-                if isinstance(ext, c_ast.FuncDef):
-                    self.visit(ext)
+        for ext in node.ext:
+            if isinstance(ext, c_ast.FuncDef):
+                self.visit(ext)
+
+    def visit_FuncCall(self, node):
+        """
+        Function used to handle function calls
+        :param node:
+        :return return_value: the return value from the function call
+        """
+        arguments = []
+
+        # need to get all the arguments
+        for argument in node.args:
+            arguments.append(self.visit(argument))
+
+        # Need to add a new frame for the function call
+        self.memory.add_frame(node.name)
+
+        for i, argument in enumerate(arguments):
+            self.memory.declare_variable(i)
+            self.memory[i] = argument
+
+        return_value = self.visit(self.memory[node.name.name])
+        self.memory.del_frame()
+
+        return return_value
 
     def visit_FuncDef(self, node):
         """
