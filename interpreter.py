@@ -1,9 +1,19 @@
+"""
+    Implementation of a C programming language interperter written in Python
+"""
+
 from pycparser import parse_file, c_parser, c_generator, c_ast
 from memory import Memory
 
 
 class Interpreter(c_ast.NodeVisitor):
+    """
+        Interpreter class used to interpret the a subset of the C programming language
+    """
     def __init__(self):
+        """
+        Default Constructor
+        """
         # memory storage for variables
         self.memory = Memory()
 
@@ -297,6 +307,11 @@ class Interpreter(c_ast.NodeVisitor):
                 self.load_function(ext)
 
     def run(self, filename):
+        """
+        Main execution function of the interpreter
+        :param filename:
+        :return:
+        """
         try:
             ast = self.read_file(filename)
             status = self.interpret(ast)
