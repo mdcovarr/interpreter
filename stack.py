@@ -1,7 +1,15 @@
+"""
+    Stack implementation utilized to keep track of different
+    function calls. usage allows to keep track of scope when
+    interpreting C code
+"""
 from frame import Frame
 
 
 class Stack(object):
+    """
+    Stack implementation
+    """
     def __init__(self):
         self.current_frame = None
         self.frames = []
