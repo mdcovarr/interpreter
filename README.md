@@ -44,3 +44,33 @@ $ python __main__.py -f test.c
 this will trigger the creation of an AST for file test.c. Followed
 by interpretation of the AST, and execution of the **main** function.
 
+
+## Run Tests
+in the directory
+```
+interpreter/examples
+```
+You will see a number of example.c files. If you want to add more
+test files, you can add them to the **examples** directory. In order
+to run any files added to the **examples** directory, you can
+utilize the **test.py** script. This script takes in all files in
+the examples directory and runs then using both **gcc** and my
+interpreter implementation. Currenly I check the exit status of
+both methods to check if both methods execute the same. 
+
+Run all tests with following command:
+```
+$ python test.py
+```
+
+Example output:
+```
+
+
+ ------------ [ Running Tests ] ------------
+
+
+0: example2.c    [pass]
+1: example1.c    [pass]
+2: example3.c    [fail]
+```
