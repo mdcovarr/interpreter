@@ -45,6 +45,8 @@ class Interpreter(c_ast.NodeVisitor):
             return node.value
         elif node.type == 'int':
             return int(node.value)
+        elif node.type == 'float':
+            return float(node.value)
 
     def visit_FileAST(self, node):
         """
