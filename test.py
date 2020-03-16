@@ -29,14 +29,17 @@ def run_c_program(filename):
 
 def run_interpreter(filename):
     try:
-        check_call(['python3', '__main__.py', '-f', filename])
+        status = check_call(['python3', '__main__.py', '-f', filename])
     except subprocess.CalledProcessError as e:
         return e.returncode
+
+    return status
 
 def check_test(out, my_out):
     if (out == my_out):
         return True
-    return False
+    else:
+        return False
 
 def print_red(status):
     return "\033[91m {}\033[00m".format(status)
