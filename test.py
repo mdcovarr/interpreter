@@ -21,8 +21,8 @@ def run_c_program(filename):
     try:
         check_call(['gcc', filename, '-o', outfile])
         status = check_call(outfile, shell=True)
-        check_call(['rm', outfile])
     except subprocess.CalledProcessError as e:
+        check_call(['rm', '-rf', outfile])
         return e.returncode
 
     return status
@@ -33,11 +33,18 @@ def run_interpreter(filename):
     except subprocess.CalledProcessError as e:
         return e.returncode
 
+def check_test(out, my_out):
+    if (out == my_out):
+        return True
+    return False
+
 def handle_tests(file_list):
+    print('\n\n ------------ [ Running Tests ] ------------\n\n')
     for filename in file_list:
         c_output = run_c_program(filename)
         my_output = run_interpreter(filename)
-        print(my_output)
+
+        status = check_test(c_output, my_output)
 
 def main():
     """
