@@ -41,7 +41,10 @@ class Interpreter(c_ast.NodeVisitor):
         :param node:
         :return: return the value of the constant
         """
-        return int(node.value)
+        if node.type == 'char':
+            return node.value
+        elif node.type == 'int':
+            return int(node.value)
 
     def visit_FileAST(self, node):
         """
