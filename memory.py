@@ -1,3 +1,10 @@
+"""
+    Memory class utilized in order to create scope for c file being interpreted,
+    and the functions encapsulated withing the interpreted file.
+
+    Reference: https://github.com/SKantar/CInterpreter
+"""
+
 from frame import Frame
 from stack import Stack
 
